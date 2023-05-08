@@ -2,19 +2,23 @@ import 'dotenv/config';
 import express from 'express';
 import { parse } from 'node-html-parser';
 import { get, has, set } from './cache';
-import { Member, MemberProvider, Organization, Project, Repository } from './interfaces';
-import { GitHub } from './infra/api/github';
+import { MemberProvider } from './infra/providers/MemberProvider';
+import { OrganizationProvider } from './infra/providers/OrganizationProvider';
+import { RepositoryProvider } from './infra/providers/RepositoryProvider';
+import { Member } from './domain/models/Member';
+import { Project } from './domain/models/Project';
+import { GitHub } from './infra/api/GitHub';
 
 const app = express();
 
 const _topic = 'soujunior-lab';
 
-const getRepositoresByTopic = async (topic = _topic): Promise<Repository[]> => {
+const getRepositoresByTopic = async (topic = _topic): Promise<RepositoryProvider[]> => {
     try {
         const key = `repositories-${topic}`;
         if (has(key)) return get(key);
         const data = await GitHub.api(`search/repositories?q=topic:${topic}&type=repositories&per_page=100`);
-        const repositories: Repository[] = data.items.filter((repository: Repository) => repository.fork === false && repository.archived === false);
+        const repositories: RepositoryProvider[] = data.items.filter((repository: RepositoryProvider) => repository.fork === false && repository.archived === false);
         set(key, repositories);
         return repositories;
     } catch (e) {
@@ -23,28 +27,28 @@ const getRepositoresByTopic = async (topic = _topic): Promise<Repository[]> => {
     }
 };
 
-const getOrganization = async (name: string): Promise<Organization> => {
-    return await GitHub.api(`orgs/${name}`) as Organization;
+const getOrganization = async (name: string): Promise<OrganizationProvider> => {
+    return await GitHub.api(`orgs/${name}`) as OrganizationProvider;
 };
 
-const getOrganizations = async (names: string[]): Promise<Organization[]> => {
+const getOrganizations = async (names: string[]): Promise<OrganizationProvider[]> => {
     try {    
-        const organizations: Organization[] = await Promise.all(setUnique(names).map(async (name: string) => await getOrganization(name)));
-        return organizations.filter((organization: Organization) => organization.type === 'Organization');
+        const organizations: OrganizationProvider[] = await Promise.all(setUnique(names).map(async (name: string) => await getOrganization(name)));
+        return organizations.filter((organization: OrganizationProvider) => organization.type === 'Organization');
     } catch (e) {
         console.error(e);
         return [];
     }
 };
 
-const getLanguages = async (repository: Repository): Promise<string> => {
+const getLanguages = async (repository: RepositoryProvider): Promise<string> => {
     const languages = await GitHub.api(`${repository.languages_url}`);
     return Object.keys(languages).join(', ');
 };
 
-const getAllLanguages = async (repositories: Repository[]): Promise<string[]> => {
+const getAllLanguages = async (repositories: RepositoryProvider[]): Promise<string[]> => {
     try {
-        const languages: string[] = await Promise.all(repositories.map(async (repository: Repository) => await getLanguages(repository)));
+        const languages: string[] = await Promise.all(repositories.map(async (repository: RepositoryProvider) => await getLanguages(repository)));
         const allLanguages: string[] = languages.map((language: string) => language.split(', ')).flat();
         return setUnique(allLanguages.filter((language: string) => language !== ''));
     } catch (e) {
@@ -53,7 +57,7 @@ const getAllLanguages = async (repositories: Repository[]): Promise<string[]> =>
     }
 };
 
-const getMembers = async (organization: Organization): Promise<Member[]> => {
+const getMembers = async (organization: OrganizationProvider): Promise<Member[]> => {
     try {
         if (organization.members_url == null) return [];
         const url = organization.members_url.replace('{/member}', '');
@@ -108,11 +112,11 @@ const getData = async (): Promise<Project[]> => {
         const key = 'projects';
         if (has(key)) return get(key)
         console.debug('Getting data from GitHub GitHub.API...');
-        const repositories: Repository[] = await getRepositoresByTopic();
-        const organizations: Organization[] = await getOrganizations(setUnique(repositories.map((repository: Repository) => repository.owner.login)));
-        const projects = await Promise.all(organizations.map(async (organization: Organization) => {
+        const repositories: RepositoryProvider[] = await getRepositoresByTopic();
+        const organizations: OrganizationProvider[] = await getOrganizations(setUnique(repositories.map((repository: RepositoryProvider) => repository.owner.login)));
+        const projects = await Promise.all(organizations.map(async (organization: OrganizationProvider) => {
             const members: Member[] = await getMembers(organization);
-            const languages: string[] = await getAllLanguages(repositories.filter((repository: Repository) => repository.owner.login === organization.login));
+            const languages: string[] = await getAllLanguages(repositories.filter((repository: RepositoryProvider) => repository.owner.login === organization.login));
             return {
                 url: organization.html_url,
                 name: organization.name ?? organization.login,
