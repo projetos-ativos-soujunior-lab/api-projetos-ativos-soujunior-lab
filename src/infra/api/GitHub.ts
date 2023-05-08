@@ -2,7 +2,7 @@ export class GitHub {
     private static readonly baseUrl = 'https://api.github.com';
     private static readonly token = process.env.GITHUB_TOKEN;
 
-    public static async api(url: string) {
+    public static async api(url: string): Promise<any> {
         url = this.setUrl(url);
         try {
             return (await fetch(url, {
