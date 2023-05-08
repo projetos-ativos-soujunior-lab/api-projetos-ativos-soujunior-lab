@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
+    "git-commit-msg-linter": "^5.0.4",
     "ts-node-dev": "^2.0.0"
   }
 }
