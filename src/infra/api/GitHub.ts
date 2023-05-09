@@ -1,20 +1,12 @@
+import { HttpClient } from "../http/HttpClient";
+
 export class GitHub {
     private static readonly baseUrl = 'https://api.github.com';
     private static readonly token = process.env.GITHUB_TOKEN;
 
     public static async api(url: string): Promise<any> {
         url = this.setUrl(url);
-        try {
-            return (await fetch(url, {
-                headers: {
-                    Authorization: this.token ? `token ${this.token}` : '',
-                    'Content-Type': 'application/json',
-                },
-                mode: 'cors',
-            })).json();
-        } catch (e) {
-            console.error(e);
-        }
+        return await HttpClient.get(url, this.token);
     }
 
     private static setUrl(url: string): string {
