@@ -1,13 +1,13 @@
 import 'dotenv/config';
 import express from 'express';
-import { parse } from 'node-html-parser';
 import { get, has, set } from './cache';
-import { MemberProvider } from './infra/providers/MemberProvider';
-import { OrganizationProvider } from './infra/providers/OrganizationProvider';
-import { RepositoryProvider } from './infra/providers/RepositoryProvider';
 import { Member } from './domain/models/Member';
 import { Project } from './domain/models/Project';
 import { GitHub } from './infra/api/GitHub';
+import { MemberProvider } from './infra/providers/MemberProvider';
+import { OrganizationProvider } from './infra/providers/OrganizationProvider';
+import { RepositoryProvider } from './infra/providers/RepositoryProvider';
+import { Html } from './infra/utils/Html';
 
 const app = express();
 
@@ -87,10 +87,7 @@ const getLinkedin = async (member: MemberProvider): Promise<string> => {
             set(member.html_url, member.blog);
             return member.blog;
         };
-        const html = await fetch(member.html_url).then((response) => response.text());
-        if (html == null) return '';
-        const link = parse(html).querySelector('a[href*="linkedin"]');
-        const linkedin = link?.getAttribute('href') ?? '';
+        const linkedin = await Html.getAtributte(member.html_url, 'a[href*="linkedin"]', 'href');
         set(member.html_url, linkedin);
         return linkedin;
     } catch (e) {
