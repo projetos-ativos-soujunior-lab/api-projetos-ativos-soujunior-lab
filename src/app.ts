@@ -7,7 +7,7 @@ import { GitHub } from './infra/api/GitHub';
 import { MemberProvider } from './infra/providers/MemberProvider';
 import { OrganizationProvider } from './infra/providers/OrganizationProvider';
 import { RepositoryProvider } from './infra/providers/RepositoryProvider';
-import { Html } from './infra/utils/Html';
+import { HtmlParser } from './infra/utils/HtmlParser';
 
 const app = express();
 
@@ -87,7 +87,7 @@ const getLinkedin = async (member: MemberProvider): Promise<string> => {
             set(member.html_url, member.blog);
             return member.blog;
         };
-        const linkedin = await Html.getAtributte(member.html_url, 'a[href*="linkedin"]', 'href');
+        const linkedin = await HtmlParser.getAtributte(member.html_url, 'a[href*="linkedin"]', 'href');
         set(member.html_url, linkedin);
         return linkedin;
     } catch (e) {
