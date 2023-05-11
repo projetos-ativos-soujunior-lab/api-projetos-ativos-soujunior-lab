@@ -1,0 +1,62 @@
+{
+    "env": {
+        "node": true,
+        "es2021": true
+    },
+    "extends": [
+        "standard-with-typescript",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "project": "./tsconfig.json",
+        "tsconfigRootDir": "./"
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "prettier",
+        "import"
+    ],
+    "rules": {
+      "prettier/prettier": "error",
+      "import/extension": "off",
+      "import/no-unresolved": "error",
+      "import/no-named-as-default-member": "off",
+      "no-console": "off",
+      "import/order": [
+        "error",
+        {
+          "newlines-between": "never",
+          "groups": [
+            ["builtin", "external"],
+            ["internal", "parent", "sibling", "index"]
+          ]
+        }
+      ],
+      "@typescript-eslint/no-misused-promises": [
+        "error",
+        {
+          "checksVoidReturn": false
+        }
+      ],
+      "@typescript-eslint/naming-convention": "off",
+      "@typescript-eslint/no-extraneous-class": "off"
+    },
+    "settings": {
+      "import/parsers": {
+        "@typescript-eslint/parser": [".ts"]
+      },
+      "import/resolver": {
+        "typescript": {
+          "alwaysTryTypes": true,
+          "project": "./tsconfig.json"
+        }
+      }
+    }
+}
