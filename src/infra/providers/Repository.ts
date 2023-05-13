@@ -1,13 +1,13 @@
-import { type LicenseProvider } from './LicenseProvider';
-import { type OwnerProvider } from './OwnerProvider';
+import { type License } from './License';
+import { type Owner } from './Owner';
 
-export interface RepositoryProvider {
+export interface Repository {
   id: number;
   node_id: string;
   name: string;
   full_name: string;
   private: boolean;
-  owner: OwnerProvider;
+  owner: Owner;
   html_url: string;
   description: string;
   fork: boolean;
@@ -71,7 +71,7 @@ export interface RepositoryProvider {
   archived: boolean;
   disabled: boolean;
   open_issues_count: number;
-  license: LicenseProvider;
+  license: License;
   allow_forking: boolean;
   is_template: boolean;
   web_commit_signoff_required: boolean;
