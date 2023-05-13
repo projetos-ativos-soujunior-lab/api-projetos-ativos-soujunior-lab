@@ -1,0 +1,11 @@
+{
+    "lang": "pt-BR",
+    "types": {
+      "temp": false
+    },
+    "max-len": 90,
+    "min-len": 10,
+    "debug": false,
+    "subject": true,
+    "scope": true
+  }

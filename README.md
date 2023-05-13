@@ -6,7 +6,7 @@
 # Dependências
 npm install
 
-npm run dev
+npm run start:dev
 ```
 
 Acesse: <http://localhost:5002>
