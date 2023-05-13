@@ -1,4 +1,4 @@
-export interface OrganizationProvider {
+export interface Organization {
   login: string;
   id: number;
   node_id: string;
