@@ -7,6 +7,7 @@ export class GitHub {
 
   public static api = async (url: string): Promise<any> => {
     url = this.setUrl(url);
+    console.debug('Getting data from GitHub API...');
     return await HttpClient.get(url, this.setToken(this.token));
   };
 

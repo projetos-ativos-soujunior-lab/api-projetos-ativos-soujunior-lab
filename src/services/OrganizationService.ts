@@ -1,3 +1,4 @@
+import { Cache } from '../infra/Cache';
 import { GitHub } from '../infra/api/GitHub';
 import { type Organization } from '../infra/providers/Organization';
 import { type Repository } from '../infra/providers/Repository';
@@ -8,8 +9,13 @@ export class OrganizationService {
 
   public readonly getOrganizationByName = async (name: string): Promise<Organization | undefined> => {
     try {
+      const key = `organization-${name}`;
+      if (Cache.has(key)) return Cache.get(key);
       const organization: Organization = await GitHub.api(`orgs/${name}`);
-      if (this.isOrganization(organization)) return organization;
+      if (this.isOrganization(organization)) {
+        Cache.set(key, organization);
+        return organization;
+      }
     } catch (e) {
       console.error(e);
       return undefined;
