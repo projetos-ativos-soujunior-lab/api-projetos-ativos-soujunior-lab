@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { ConsolidateController } from './controllers/ConsolidateController';
+import { ProjectController } from './controllers/ProjectController';
 import { MemberService } from './services/MemberService';
 import { OrganizationService } from './services/OrganizationService';
 import { ProjectService } from './services/ProjectService';
@@ -13,6 +13,6 @@ const memberService = new MemberService();
 
 const projectService = new ProjectService(organizationService, repositoryService, memberService);
 
-routes.get('/consolidate', new ConsolidateController(projectService).getData);
+routes.get('/projects', new ProjectController(projectService).getData);
 
 export default routes;
