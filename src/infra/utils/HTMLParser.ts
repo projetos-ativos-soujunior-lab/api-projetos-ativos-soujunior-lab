@@ -9,6 +9,11 @@ export class HTMLParser {
   };
 
   private static readonly getPageAsText = async (link: string): Promise<string> => {
-    return await fetch(link).then(async response => await response.text());
+    try {
+      return await fetch(link).then(async response => await response.text());
+    } catch (e) {
+      console.error(e);
+      return '';
+    }
   };
 }
