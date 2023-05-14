@@ -24,7 +24,7 @@ export class RepositoryService {
 
   getRepositoryLanguages = async (repository: Repository): Promise<string[]> => {
     try {
-      const key = `repository-${repository.id}-languages`;
+      const key = `${repository.id}-languages`;
       if (Cache.has(key)) return Cache.get(key);
       const data = await GitHub.api(`${repository.url}/languages`);
       const languages = Object.keys(data);
@@ -38,7 +38,7 @@ export class RepositoryService {
 
   getRepositoryTopics = async (repository: Repository): Promise<string[]> => {
     try {
-      const key = `repository-${repository.id}-topics`;
+      const key = `${repository.id}-topics`;
       if (Cache.has(key)) return Cache.get(key);
       const data = await GitHub.api(`${repository.url}/topics`);
       const topics = data.names;
@@ -54,7 +54,7 @@ export class RepositoryService {
     const languages = await this.getRepositoryLanguages(repository);
     const topics = await this.getRepositoryTopics(repository);
     const technologies = [...new Set([...languages, ...topics.filter(Technology.isTech)])];
-    return technologies;
+    return await Promise.all(technologies);
   };
 
   private readonly isForkAndArchived = (repository: Repository): boolean => {

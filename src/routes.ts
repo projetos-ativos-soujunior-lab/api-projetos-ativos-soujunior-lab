@@ -9,9 +9,8 @@ const routes = Router();
 
 const memberService = new MemberService();
 const repositoryService = new RepositoryService();
-const organizationService = new OrganizationService(repositoryService);
-
-const projectService = new ProjectService(organizationService, repositoryService, memberService);
+const organizationService = new OrganizationService(repositoryService, memberService);
+const projectService = new ProjectService(organizationService);
 
 routes.get('/projects', new ProjectController(projectService).getData);
 
