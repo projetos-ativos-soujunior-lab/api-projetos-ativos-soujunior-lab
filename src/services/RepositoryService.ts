@@ -5,7 +5,7 @@ import { type Repository } from '../infra/providers/Repository';
 export class RepositoryService {
   private readonly topic = 'soujunior-lab';
 
-  public readonly getRepositories = async (): Promise<Repository[]> => {
+  getRepositories = async (): Promise<Repository[]> => {
     try {
       const key = `repositories-${this.topic}`;
       if (Cache.has(key)) return Cache.get(key);
@@ -21,7 +21,7 @@ export class RepositoryService {
     }
   };
 
-  public readonly getRepositoryLanguages = async (repository: Repository): Promise<string> => {
+  getRepositoryLanguages = async (repository: Repository): Promise<string> => {
     try {
       const key = `repository-${repository.id}-languages`;
       if (Cache.has(key)) return Cache.get(key);

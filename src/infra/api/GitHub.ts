@@ -5,7 +5,7 @@ export class GitHub {
   private static readonly baseUrl = 'https://api.github.com';
   private static readonly token = process.env.GITHUB_TOKEN as string;
 
-  public static api = async (url: string): Promise<any> => {
+  static api = async (url: string): Promise<any> => {
     url = this.setUrl(url);
     console.debug('Getting data from GitHub API...');
     return await HttpClient.get(url, this.setToken(this.token));

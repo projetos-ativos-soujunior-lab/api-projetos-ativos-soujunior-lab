@@ -7,7 +7,7 @@ import { RepositoryService } from './RepositoryService';
 export class OrganizationService {
   private readonly exclusionList: string[] = ['projetos-ativos-soujunior-lab', 'SouJunior'];
 
-  public readonly getOrganizationByName = async (name: string): Promise<Organization | undefined> => {
+  getOrganizationByName = async (name: string): Promise<Organization | undefined> => {
     try {
       const key = `organization-${name}`;
       if (Cache.has(key)) return Cache.get(key);
@@ -22,7 +22,7 @@ export class OrganizationService {
     }
   };
 
-  public readonly getOrganizationsByName = async (names: string[]): Promise<Organization[]> => {
+  getOrganizationsByName = async (names: string[]): Promise<Organization[]> => {
     const organizations: Organization[] = [];
     const noRepeatOrganizations = new Set(names);
     const namesOrganizations = this.removeOrganizations(Array.from(noRepeatOrganizations));
@@ -33,7 +33,7 @@ export class OrganizationService {
     return organizations;
   };
 
-  public readonly getOrganizationLanguages = async (repositories: Repository[]): Promise<string[]> => {
+  getOrganizationLanguages = async (repositories: Repository[]): Promise<string[]> => {
     const repositoryService = new RepositoryService();
     const languages: string[] = await Promise.all(
       repositories.map(async (repository: Repository) => await repositoryService.getRepositoryLanguages(repository))

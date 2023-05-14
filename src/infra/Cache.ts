@@ -10,25 +10,25 @@ export class Cache {
     return { stdTTL, checkperiod: this.checkperiod * 0.2, useClones: false };
   };
 
-  public static readonly has = (key: string): boolean => {
+  static readonly has = (key: string): boolean => {
     return this.cache.has(key);
   };
 
-  public static readonly get = (key: string): any => {
+  static readonly get = (key: string): any => {
     console.debug('Cache Key:', key);
     console.debug('Cache Stats:', this.cache.getStats());
     return this.cache.get(key);
   };
 
-  public static readonly set = (key: string, value: any, ttl = this.stdTTL): void => {
+  static readonly set = (key: string, value: any, ttl = this.stdTTL): void => {
     this.cache.set(key, value, ttl);
   };
 
-  public static readonly clear = (): void => {
+  static readonly clear = (): void => {
     this.cache.flushAll();
   };
 
-  public static readonly del = (key: string): void => {
+  static readonly del = (key: string): void => {
     this.cache.del(key);
   };
 
