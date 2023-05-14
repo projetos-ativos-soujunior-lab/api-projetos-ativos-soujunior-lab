@@ -1,3 +1,4 @@
+import { Technology } from '../domain/models/Technology';
 import { Cache } from '../infra/Cache';
 import { GitHub } from '../infra/api/GitHub';
 import { type Repository } from '../infra/providers/Repository';
@@ -47,6 +48,13 @@ export class RepositoryService {
       console.error(e);
       return [];
     }
+  };
+
+  getRepositoryTechnologies = async (repository: Repository): Promise<string[]> => {
+    const languages = await this.getRepositoryLanguages(repository);
+    const topics = await this.getRepositoryTopics(repository);
+    const technologies = [...new Set([...languages, ...topics.filter(Technology.isTech)])];
+    return technologies;
   };
 
   private readonly isForkAndArchived = (repository: Repository): boolean => {
