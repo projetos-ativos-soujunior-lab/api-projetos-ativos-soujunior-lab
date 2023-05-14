@@ -21,17 +21,17 @@ export class RepositoryService {
     }
   };
 
-  getRepositoryLanguages = async (repository: Repository): Promise<string> => {
+  getRepositoryLanguages = async (repository: Repository): Promise<string[]> => {
     try {
       const key = `repository-${repository.id}-languages`;
       if (Cache.has(key)) return Cache.get(key);
-      const data = await GitHub.api(`${repository.languages_url}`);
-      const languages = Object.keys(data).join(', ');
+      const data = await GitHub.api(`${repository.url}/languages`);
+      const languages = Object.keys(data);
       Cache.set(key, languages);
       return languages;
     } catch (e) {
       console.error(e);
-      return '';
+      return [];
     }
   };
 
