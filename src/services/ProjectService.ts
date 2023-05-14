@@ -23,15 +23,15 @@ export class ProjectService {
       const projects = await Promise.all(
         organizations.map(async organization => {
           const members: MemberDto[] = await MemberMapper.toDtos(await this.memberService.getMembers(organization));
-          const languages: string[] = await this.organizationService.getOrganizationLanguages(
+          const technologies: string[] = await this.organizationService.getOrganizationLanguages(
             repositories.filter(repository => repository.owner.login === organization.login)
           );
           return {
             name: organization.name ?? organization.login,
             url: organization.html_url,
             description: organization.description ?? '',
+            technologies,
             members,
-            languages,
           };
         })
       );
