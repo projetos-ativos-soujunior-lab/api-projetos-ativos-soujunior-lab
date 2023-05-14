@@ -35,6 +35,20 @@ export class RepositoryService {
     }
   };
 
+  getRepositoryTopics = async (repository: Repository): Promise<string[]> => {
+    try {
+      const key = `repository-${repository.id}-topics`;
+      if (Cache.has(key)) return Cache.get(key);
+      const data = await GitHub.api(`${repository.url}/topics`);
+      const topics = data.names;
+      Cache.set(key, topics);
+      return topics;
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  };
+
   private readonly isForkAndArchived = (repository: Repository): boolean => {
     return repository.fork && repository.archived;
   };
