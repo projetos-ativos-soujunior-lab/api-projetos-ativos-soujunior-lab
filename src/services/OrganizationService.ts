@@ -2,10 +2,12 @@ import { Cache } from '../infra/Cache';
 import { GitHub } from '../infra/api/GitHub';
 import { type Organization } from '../infra/providers/Organization';
 import { type Repository } from '../infra/providers/Repository';
-import { RepositoryService } from './RepositoryService';
+import { type RepositoryService } from './RepositoryService';
 
 export class OrganizationService {
   private readonly exclusionList: string[] = ['projetos-ativos-soujunior-lab', 'SouJunior'];
+
+  constructor(private readonly repositoryService: RepositoryService) {}
 
   getOrganizationByName = async (name: string): Promise<Organization | undefined> => {
     try {
@@ -33,13 +35,13 @@ export class OrganizationService {
     return organizations;
   };
 
-  getOrganizationLanguages = async (repositories: Repository[]): Promise<string[]> => {
-    const repositoryService = new RepositoryService();
-    const languages: string[] = await Promise.all(
-      repositories.map(async (repository: Repository) => await repositoryService.getRepositoryLanguages(repository))
-    );
-    const allLanguages: string[] = languages.map((language: string) => language.split(', ')).flat();
-    return [...new Set(allLanguages.filter((language: string) => language !== ''))];
+  getOrganizationTechnologies = async (repositories: Repository[]): Promise<string[]> => {
+    const technologies: string[] = [];
+    for (const repository of repositories) {
+      const repositoryTechnologies = await this.repositoryService.getRepositoryTechnologies(repository);
+      technologies.push(...repositoryTechnologies);
+    }
+    return [...new Set(technologies)];
   };
 
   private readonly isOrganization = (organization: Organization): boolean => {

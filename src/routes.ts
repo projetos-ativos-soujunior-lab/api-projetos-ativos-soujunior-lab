@@ -7,9 +7,9 @@ import { RepositoryService } from './services/RepositoryService';
 
 const routes = Router();
 
-const organizationService = new OrganizationService();
-const repositoryService = new RepositoryService();
 const memberService = new MemberService();
+const repositoryService = new RepositoryService();
+const organizationService = new OrganizationService(repositoryService);
 
 const projectService = new ProjectService(organizationService, repositoryService, memberService);
 
