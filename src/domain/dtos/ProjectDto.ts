@@ -4,6 +4,6 @@ export interface ProjectDto {
   name: string;
   url: string;
   description: string;
-  languages: string[];
+  technologies: string[];
   members: MemberDto[];
 }
