@@ -1,4 +1,4 @@
-export interface Owner {
+export default interface Member {
   login: string;
   id: number;
   node_id: string;
@@ -17,4 +17,18 @@ export interface Owner {
   received_events_url: string;
   type: string;
   site_admin: boolean;
+  name: string;
+  company: any;
+  blog: string;
+  location: string;
+  email: any;
+  hireable: boolean;
+  bio: any;
+  twitter_username: any;
+  public_repos: number;
+  public_gists: number;
+  followers: number;
+  following: number;
+  created_at: string;
+  updated_at: string;
 }

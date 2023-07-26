@@ -1,4 +1,4 @@
-export interface License {
+export default interface License {
   key: string;
   name: string;
   spdx_id: string;

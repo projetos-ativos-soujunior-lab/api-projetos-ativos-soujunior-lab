@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import NodeCache from 'node-cache';
 
-export class Cache {
+export default class Cache {
   private static cache: NodeCache;
   private static readonly stdTTL = Number(process.env.CACHE_TTL);
   private static readonly checkperiod = 120;
@@ -15,8 +15,6 @@ export class Cache {
   };
 
   static readonly get = (key: string): any => {
-    console.debug('Cache Key:', key);
-    console.debug('Cache Stats:', this.cache.getStats());
     return this.cache.get(key);
   };
 

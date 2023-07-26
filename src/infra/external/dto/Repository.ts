@@ -1,7 +1,7 @@
-import { type License } from './License';
-import { type Owner } from './Owner';
+import type License from './License';
+import type Owner from './Owner';
 
-export interface Repository {
+export default interface Repository {
   id: number;
   node_id: string;
   name: string;
