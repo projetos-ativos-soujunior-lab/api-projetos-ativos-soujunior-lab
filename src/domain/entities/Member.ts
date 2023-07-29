@@ -9,7 +9,7 @@ export default class Member {
     readonly site: string
   ) {}
 
-  static builder = async (members: any[]): Promise<Member[]> => {
+  static create = async (members: any[]): Promise<Member[]> => {
     const memberList: Member[] = [];
     for (const member of members) {
       const linkedin = await Member.getLinkedin(member);
