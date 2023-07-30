@@ -27,4 +27,17 @@ export default class ExpressAdapter implements HttpServer {
       console.log(`Server is running on port ${port}`);
     });
   };
+
+  routes = (): string[] => {
+    const routes = this.app._router.stack
+      .filter((layer: any) => layer.route)
+      .map((layer: any) => {
+        return {
+          method: Object.keys(layer.route.methods)[0].toUpperCase(),
+          path: layer.route.path,
+          name: layer.route.path.split('/')[3],
+        };
+      });
+    return routes;
+  };
 }

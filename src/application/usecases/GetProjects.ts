@@ -15,7 +15,7 @@ export default class GetProjects {
         const members = await this.api.getMembersByOrg(org);
         const languages = await this.api.getOrgLanguages(org);
         const topics = await this.api.getOrgTopics(org);
-        return await Project.builder(org, languages, topics, members);
+        return await Project.create(org, languages, topics, members);
       })
     );
     return Project.filter(projects);

@@ -11,11 +11,11 @@ export default class GetProjectsCron {
   }
 
   start = (): void => {
-    const cronTime = '*/1 * * * *';
-    CronAdapter.schedule(cronTime, async () => {
+    CronAdapter.schedule(async () => {
       const key = 'projects';
+      console.debug('Cron Job: Checking if data is in cache...');
       if (!Cache.has(key)) {
-        console.debug('Cron Job: Getting data from GitHub API...');
+        console.debug('Getting data from GitHub API...');
         const timeStart = new Date().getTime();
         const projects = await this.getProjects.execute();
         Cache.set(key, projects);

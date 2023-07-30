@@ -1,5 +1,5 @@
 export default class Technology {
-  static builder = (languages: string[], topics: string[]): string[] => {
+  static create = (languages: string[], topics: string[]): string[] => {
     return [...new Set([...languages, ...topics.filter(Technology.isValid).map(topic => Technology.normalize(topic))])];
   };
 

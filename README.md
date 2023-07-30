@@ -1,5 +1,32 @@
 # Projetos Ativos API
 
+## Requisitos
+
+* [NodeJS](https://nodejs.org/en)
+* [GitHub Token](#github-token)
+
+## Execução
+
+1. Clone este projeto
+2. Copie o arquivo .env.exemple e o renomeie para .env
+3. Adicione seu [token do GitHub](#github-token) ao arquivo .env
+
+    ```.env
+    GITHUB_TOKEN=github_pat_11AM..
+    ```
+
+4. Instale as dependências
+
+    ```sh
+    npm install
+    ```
+
+5. Compile e execute o projeto
+
+    ```sh
+    npm run build && npm run start
+    ```
+
 ## Development
 
 ```sh
@@ -9,9 +36,9 @@ npm install
 npm run start:dev
 ```
 
-Acesse: <http://localhost:5002>
+Acesse: <http://localhost:5000>
 
-## Build & Start
+## Build
 
 ```sh
 # Dependências

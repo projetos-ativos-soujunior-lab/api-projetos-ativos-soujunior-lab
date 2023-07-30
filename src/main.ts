@@ -7,7 +7,7 @@ import FetchAdapter from './infra/http/FetchAdapter';
 import GetProjectsController from './presentation/controllers/GetProjectsController';
 
 const main = (): void => {
-  const port = process.env.PORT ?? 5001;
+  const port = process.env.PORT ?? 5000;
   const httpClient = new FetchAdapter();
   const usecaseFactory = new UsecaseFactory(new GitHubAdapter(httpClient));
   const getProjectsController = new GetProjectsController(usecaseFactory);
@@ -17,6 +17,7 @@ const main = (): void => {
   getProjectsCron.start();
 
   server.on('get', '/api/v1/projects', getProjectsController.handle);
+  server.on('get', '*', () => server.routes());
 
   server.listen(port as number);
 };

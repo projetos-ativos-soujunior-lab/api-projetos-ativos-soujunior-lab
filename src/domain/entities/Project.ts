@@ -10,12 +10,15 @@ export default class Project {
     readonly members: Member[]
   ) {}
 
-  static builder = async (org: any, languages: string[], topics: string[], members: any[]): Promise<Project> => {
+  static create = async (org: any, languages: string[], topics: string[], members: any[]): Promise<Project> => {
+    const memberList: Member[] = [];
     const name = org.name ?? org.login;
     const description = org.description ?? '';
     const url = org.html_url;
-    const technologies = Technology.builder(languages, topics);
-    const memberList = await Member.builder(members);
+    const technologies = Technology.create(languages, topics);
+    for (const member of members) {
+      memberList.push(await Member.create(member));
+    }
     return new Project(name, description, url, technologies, memberList);
   };
 
