@@ -20,7 +20,7 @@ export default class GetProjectsCron {
         const projects = await this.getProjects.execute();
         Cache.set(key, projects);
         const timeEnd = new Date().getTime();
-        console.log(`Getting data from GitHub API took ${timeEnd - timeStart} ms`);
+        console.log(`Cron Job: Getting data from GitHub API took ${timeEnd - timeStart} ms`);
       }
     });
   };
