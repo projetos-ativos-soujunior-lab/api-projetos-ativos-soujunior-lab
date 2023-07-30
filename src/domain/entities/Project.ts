@@ -11,11 +11,14 @@ export default class Project {
   ) {}
 
   static create = async (org: any, languages: string[], topics: string[], members: any[]): Promise<Project> => {
+    const memberList: Member[] = [];
     const name = org.name ?? org.login;
     const description = org.description ?? '';
     const url = org.html_url;
     const technologies = Technology.create(languages, topics);
-    const memberList = await Member.create(members);
+    for (const member of members) {
+      memberList.push(await Member.create(member));
+    }
     return new Project(name, description, url, technologies, memberList);
   };
 

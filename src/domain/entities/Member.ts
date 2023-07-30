@@ -9,15 +9,11 @@ export default class Member {
     readonly site: string
   ) {}
 
-  static create = async (members: any[]): Promise<Member[]> => {
-    const memberList: Member[] = [];
-    for (const member of members) {
-      const linkedin = await Member.getLinkedin(member);
-      const twitter = member.twitter_username ?? '';
-      const site = this.getSite(member.blog);
-      memberList.push(new Member(member.name, member.html_url, linkedin, twitter, site));
-    }
-    return memberList;
+  static create = async (member: any): Promise<Member> => {
+    const linkedin = await Member.getLinkedin(member);
+    const twitter = member.twitter_username ?? '';
+    const site = this.getSite(member.blog);
+    return new Member(member.name, member.html_url, linkedin, twitter, site);
   };
 
   static readonly getLinkedin = async (member: any): Promise<string> => {
