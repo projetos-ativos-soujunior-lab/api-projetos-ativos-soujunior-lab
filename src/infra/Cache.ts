@@ -4,10 +4,10 @@ import NodeCache from 'node-cache';
 export default class Cache {
   private static cache: NodeCache;
   private static readonly stdTTL = Number(process.env.CACHE_TTL ?? 3600);
-  private static readonly checkperiod = 120;
+  private static readonly checkPeriod = 120;
 
   private static readonly configure = (stdTTL = this.stdTTL): NodeCache.Options => {
-    return { stdTTL, checkperiod: this.checkperiod * 0.2, useClones: false };
+    return { stdTTL, checkperiod: this.checkPeriod * 0.2, useClones: false };
   };
 
   static readonly has = (key: string): boolean => {

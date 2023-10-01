@@ -1,7 +1,7 @@
 import HTMLParser from '../../infra/HTMLParser';
 
 export default class Member {
-  constructor(
+  private constructor(
     readonly name: string,
     readonly github: string,
     readonly linkedin: string,
@@ -9,18 +9,16 @@ export default class Member {
     readonly site: string
   ) {}
 
-  static create = async (member: any): Promise<Member> => {
-    const linkedin = await Member.getLinkedin(member);
-    const twitter = member.twitter_username ?? '';
-    const site = this.getSite(member.blog);
-    return new Member(member.name, member.html_url, linkedin, twitter, site);
+  static create = async (name: string, github: string, twitter: string, blog: string): Promise<Member> => {
+    const linkedin = blog.includes('linkedin') ? blog : await Member.getLinkedin(github);
+    const site = Member.getSite(blog);
+    return new Member(name, github, linkedin, twitter, site);
   };
 
-  static readonly getLinkedin = async (member: any): Promise<string> => {
-    if (member.blog.includes('linkedin') === true) return member.blog;
+  static readonly getLinkedin = async (github: string): Promise<string> => {
     const selector = 'a[href*="linkedin"]';
     const atributte = 'href';
-    const linkedin = await HTMLParser.parse(member.html_url, selector, atributte);
+    const linkedin = await HTMLParser.parse(github, selector, atributte);
     return linkedin;
   };
 
