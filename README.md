@@ -60,3 +60,8 @@ No arquivo `.env` adicione seu token em `GITHUB_TOKEN` seguindo o exemplo do arq
 ```yaml
 GITHUB_TOKEN=github_pat_11AM...
 ```
+
+## CronJob
+
+Deve ser sincronizado o tempo de cache com a tarefa programada cron. O tempo de cache deve ser menor que o tempo que a tarefa cron será executada, por exemplo:
+Se a tarefa cron for executada a cada 24 horas, o cache deve ser ajustado para menos de 24 horas, ou seja, 23 horas e 59 segundos. Isso se dá para que a tarefa seja executada sempre que não houver dados em cache. De qualquer forma, a tarefa pode ser executada a qualquer momento, ja que será verificado primeiro se os dados estão em cache, podendo ser ajustada para ser verificado a cada 1 hora, por exemplo.
