@@ -5,16 +5,16 @@ export default class HTMLParser {
     const html = await this.getPageAsText(link);
     const root = parse(html);
     const element = root.querySelector(selector);
-    return element?.getAttribute(attribute) ?? '';
+    const attributeValue = element?.getAttribute(attribute) ?? '';
+    return attributeValue;
   };
 
   private static readonly getPageAsText = async (link: string): Promise<string> => {
-    try {
-      const response = await fetch(link);
-      return await response.text();
-    } catch (e) {
-      console.error(e);
-      return '';
-    }
+    return await fetch(link)
+      .then(async response => await response.text())
+      .catch(error => {
+        console.error(`Error getting page as text: ${(error as Error).message}`);
+        return '';
+      });
   };
 }
